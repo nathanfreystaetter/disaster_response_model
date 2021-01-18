@@ -1,4 +1,4 @@
-# disaster_response_model
+# Disaster Response Model
 
 ### Table of Contents
 
@@ -13,12 +13,27 @@ In addition to the Anaconda distribution of Python, this notebook requires insta
 
 ## Project Motivation<a name="motivation"></a>
 
-The piece exemplifies my data and analysis skillset to show prospective employers the unique value I can add to their business. My analysis was performed on data collected from social media platforms, and leveraged machine learning techniques to identify disasters and categorize for an appropriate and expedited response.
+My analysis was performed on data collected from social media platforms, and leveraged machine learning techniques to identify disasters and categorize for an appropriate and expedited response from an appropriate party.
 
 ## File Descriptions <a name="files"></a>
 
 Data is stored in 2 CSV files located in the "Data" folder
-Output from the analysis including a GUI has been deployed using Flask
+Output from the analysis including a GUI has been deployed using Flask. Structure of the project includes
+
+app
+| | - template
+| | - master.html # main page of web app
+| | - go.html # classification result page of web app
+| | - run.py # Flask file that runs app
+data
+| | - disaster_categories.csv # data to process
+| | - disaster_messages.csv # data to process
+| | - process_data.py
+| | - InsertDatabaseName.db # database to save clean data to
+models
+| | - train_classifier.py
+| | - classifier.pkl # saved model
+README.md
 
 ## Results<a name="results"></a>
 
