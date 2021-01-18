@@ -40,7 +40,7 @@ def clean_data(df):
     df = df.drop('categories', 1)
     df = pd.concat([df, categories], axis=1, join_axes=[df.index])
     
-    #dedup dataset, keep first
+    #dedup dataset, keep first record
     df=df.drop_duplicates(keep='first')
     
     return df

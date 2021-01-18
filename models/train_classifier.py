@@ -121,7 +121,7 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 def save_model(model, model_filepath):
     '''
-    Save model as a pickle file 
+    Save model as a pickle file. 
     Input: 
         model: Model to be saved
         model_filepath: path of the output pick file
