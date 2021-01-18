@@ -30,17 +30,19 @@ def clean_data(df):
     category_colnames = row.apply(lambda x: x.str.slice(0,-2)).values.tolist().pop() 
     categories.columns = category_colnames
 
-    #replace value of categories columns to a binary 1/0 and convert to int
+    #replace value of categories columns to a binary 1/0 and convert to numeric value
     for column in categories:
-        categories[column] = categories[column].str.slice(-1,99)
-        categories[column] = categories[column].astype(int)
+        categories[column] = categories[column].astype(str)
+        categories[column] = categories[column].str[-1:]
+        categories[column] = pd.to_numeric(categories[column], errors='coerce')
     
     #remove original categories column for df and replace with categories by concatenating them
-    df=df.iloc[:,:-1]
-    df = pd.concat([df, categories], axis=1)
+    df = df.drop('categories', 1)
+    df = pd.concat([df, categories], axis=1, join_axes=[df.index])
     
-    #dedup dataset by message
-    df=df.drop_duplicates(subset=['message'])
+    #dedup dataset, keep first record
+    df=df.drop_duplicates(keep='first')
+    
     return df
 
 def save_data(df, database_filename):
@@ -53,7 +55,7 @@ def save_data(df, database_filename):
         A SQLite database
     '''
     engine = create_engine('sqlite:///' + database_filename)
-    df.to_sql('factMessages', engine, index=False)  
+    df.to_sql('factMessages', engine, index=False, if_exists='replace')  
 
 def main():
     if len(sys.argv) == 4:

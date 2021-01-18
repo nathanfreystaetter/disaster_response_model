@@ -88,21 +88,18 @@ def build_model():
     This function output is a Scikit ML Pipeline that process text messages
     according to NLP best-practice and apply a classifier.
     """
-    pipeline = Pipeline([
-        ('features', FeatureUnion([
-
-            ('text_pipeline', Pipeline([
-                ('vect', CountVectorizer(tokenizer=tokenize)),
-                ('tfidf', TfidfTransformer())
-            ])),
-
-            ('starting_verb', StartingVerbExtractor())
-        ])),
-
-        ('clf', MultiOutputClassifier(AdaBoostClassifier()))
+    pipeline  = Pipeline([
+        ('vect', CountVectorizer(tokenizer=tokenize)),
+        ('tfidf', TfidfTransformer()),
+        ('clf', MultiOutputClassifier(OneVsRestClassifier(LinearSVC(random_state=0))))
     ])
+    
+    parameters = {
+        'vect__ngram_range': ((1, 1), (1, 2))
+    }
 
-    return pipeline
+    cv = GridSearchCV(pipeline, param_grid=parameters, verbose=2, n_jobs=4)
+    return cv
 
 def evaluate_model(model, X_test, Y_test, category_names):
     '''
@@ -124,7 +121,7 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 def save_model(model, model_filepath):
     '''
-    Save model as a pickle file 
+    Save model as a pickle file. 
     Input: 
         model: Model to be saved
         model_filepath: path of the output pick file
