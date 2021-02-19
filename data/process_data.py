@@ -35,6 +35,7 @@ def clean_data(df):
         categories[column] = categories[column].astype(str)
         categories[column] = categories[column].str[-1:]
         categories[column] = pd.to_numeric(categories[column], errors='coerce')
+
     
     #remove original categories column for df and replace with categories by concatenating them
     df = df.drop('categories', 1)
@@ -42,6 +43,8 @@ def clean_data(df):
     
     #dedup dataset, keep first record
     df=df.drop_duplicates(keep='first')
+    df.loc[df.related >= 2,'related'] = 1
+
     
     return df
 
